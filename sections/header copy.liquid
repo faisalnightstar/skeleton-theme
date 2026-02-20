@@ -1,0 +1,99 @@
+<!-- CarKit Header Section -->
+<header class="header" style="position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid #e2e8f0;">
+  <div class="header__container" style="max-width: 1280px; margin: 0 auto; padding: 0 24px; height: 72px; display: flex; align-items: center; justify-content: space-between;">
+
+    <!-- Logo -->
+    <a href="/" class="header__logo" style="display: flex; align-items: center; gap: 10px; text-decoration: none;">
+      <div style="width: 36px; height: 36px; background: {{ section.settings.logo_bg_color }}; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+        <span class="material-symbols-outlined" style="color: #fff; font-size: 20px;">directions_car</span>
+      </div>
+      <span style="font-size: 20px; font-weight: 900; color: #111418; letter-spacing: -0.025em;">{{ section.settings.logo_text }}</span>
+    </a>
+
+    <!-- Search Bar -->
+    <div class="header__search" style="flex: 1; max-width: 480px; margin: 0 40px;">
+      <div style="position: relative;">
+        <span class="material-symbols-outlined" style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 20px;">search</span>
+        <input type="text" placeholder="{{ section.settings.search_placeholder }}" style="width: 100%; height: 44px; padding: 0 16px 0 48px; background: #f1f5f9; border: 1px solid transparent; border-radius: 9999px; font-size: 14px; color: #334155; outline: none; transition: all 0.2s;" onfocus="this.style.borderColor='#0d7ff2'; this.style.background='#fff'; this.style.boxShadow='0 0 0 3px rgba(13,127,242,0.1)'" onblur="this.style.borderColor='transparent'; this.style.background='#f1f5f9'; this.style.boxShadow='none'">
+      </div>
+    </div>
+
+    <!-- Right Nav -->
+    <nav class="header__nav" style="display: flex; align-items: center; gap: 8px;">
+      {% for block in section.blocks %}
+        {% if block.type == 'nav_link' %}
+          <a href="{{ block.settings.url }}" style="padding: 8px 16px; font-size: 14px; font-weight: 500; color: #475569; text-decoration: none; border-radius: 8px; transition: all 0.2s;" onmouseover="this.style.color='#111418'; this.style.background='#f1f5f9'" onmouseout="this.style.color='#475569'; this.style.background='transparent'">{{ block.settings.label }}</a>
+        {% endif %}
+      {% endfor %}
+
+      <!-- Divider -->
+      <div style="width: 1px; height: 24px; background: #e2e8f0; margin: 0 8px;"></div>
+
+      <!-- Account -->
+      <a href="/account" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 8px; color: #475569; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='transparent'">
+        <span class="material-symbols-outlined" style="font-size: 22px;">person</span>
+      </a>
+
+      <!-- Cart -->
+      <a href="/cart" style="position: relative; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 8px; color: #475569; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='#f1f5f9'" onmouseout="this.style.background='transparent'">
+        <span class="material-symbols-outlined" style="font-size: 22px;">shopping_bag</span>
+        <span style="position: absolute; top: 6px; right: 6px; width: 8px; height: 8px; background: #0d7ff2; border-radius: 50%; border: 2px solid #fff;"></span>
+      </a>
+    </nav>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "color",
+      "id": "logo_bg_color",
+      "label": "Logo Background Color",
+      "default": "#0d7ff2"
+    },
+    {
+      "type": "text",
+      "id": "logo_text",
+      "label": "Logo Text",
+      "default": "CarKit"
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Search Placeholder",
+      "default": "Search parts, accessories, brands..."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "nav_link",
+      "name": "Navigation Link",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Shop"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Header",
+      "blocks": [
+        { "type": "nav_link", "settings": { "label": "Shop" } },
+        { "type": "nav_link", "settings": { "label": "Fitment" } },
+        { "type": "nav_link", "settings": { "label": "Support" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

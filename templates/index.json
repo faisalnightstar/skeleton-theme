@@ -17,4 +17,50 @@
   "order": [
     "main"
   ]
+},
+{
+  "sections": {
+    "header": {
+      "type": "header",
+      "settings": {}
+    },
+    "hero": {
+      "type": "hero",
+      "settings": {}
+    },
+    "category-grid": {
+      "type": "category-grid",
+      "settings": {}
+    },
+    "trending-products": {
+      "type": "trending-products",
+      "settings": {}
+    },
+    "verified-products": {
+      "type": "verified-products",
+      "settings": {}
+    },
+    "brands-strip": {
+      "type": "brands-strip",
+      "settings": {}
+    },
+    "guarantee-bar": {
+      "type": "guarantee-bar",
+      "settings": {}
+    },
+    "footer": {
+      "type": "footer",
+      "settings": {}
+    }
+  },
+  "order": [
+    "header",
+    "hero",
+    "category-grid",
+    "trending-products",
+    "verified-products",
+    "brands-strip",
+    "guarantee-bar",
+    "footer"
+  ]
 }

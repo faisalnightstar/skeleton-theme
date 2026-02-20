@@ -1,0 +1,124 @@
+<!-- CarKit Trending Products Section -->
+<section style="background: #fff; padding: 64px 0;">
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 24px;">
+
+    <!-- Header -->
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px;">
+      <h2 style="font-size: 30px; font-weight: 900; color: #111418; letter-spacing: -0.025em;">{{ section.settings.heading }}</h2>
+      <a href="{{ section.settings.view_all_url }}" style="display: inline-flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 600; color: #0d7ff2; text-decoration: none;">
+        View All <span class="material-symbols-outlined" style="font-size: 18px;">arrow_forward</span>
+      </a>
+    </div>
+
+    <!-- Product Grid -->
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
+      {% for block in section.blocks %}
+        {% if block.type == 'product' %}
+          <div class="trending-card" style="cursor: pointer;" onmouseover="this.querySelector('.quick-add').style.transform='translateY(0)'; this.querySelector('.quick-add').style.opacity='1'; this.querySelector('.product-img').style.transform='scale(1.05)'" onmouseout="this.querySelector('.quick-add').style.transform='translateY(100%)'; this.querySelector('.quick-add').style.opacity='0'; this.querySelector('.product-img').style.transform='scale(1)'">
+
+            <!-- Image Container -->
+            <div style="position: relative; aspect-ratio: 4/5; border-radius: 12px; overflow: hidden; background: #f1f5f9; margin-bottom: 14px;">
+              {% if block.settings.image != blank %}
+                <img class="product-img" src="{{ block.settings.image | image_url: width: 600 }}" alt="{{ block.settings.title }}" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s;">
+              {% else %}
+                <div class="product-img" style="width: 100%; height: 100%; background: linear-gradient(135deg, #e2e8f0, #f1f5f9); display: flex; align-items: center; justify-content: center; transition: transform 0.3s;">
+                  <span class="material-symbols-outlined" style="font-size: 48px; color: #cbd5e1;">image</span>
+                </div>
+              {% endif %}
+
+              <!-- Badge -->
+              {% if block.settings.badge != blank %}
+                <div style="position: absolute; top: 12px; left: 12px; padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+                  {% if block.settings.badge_type == 'discount' %}
+                    background: #f43f5e; color: #fff;
+                  {% else %}
+                    background: rgba(255,255,255,0.9); color: #111418; backdrop-filter: blur(8px);
+                  {% endif %}
+                ">{{ block.settings.badge }}</div>
+              {% endif %}
+
+              <!-- Quick Add -->
+              <div class="quick-add" style="position: absolute; bottom: 0; left: 0; right: 0; padding: 12px; transform: translateY(100%); opacity: 0; transition: all 0.3s;">
+                <button style="width: 100%; height: 44px; background: #0d7ff2; color: #fff; font-size: 13px; font-weight: 600; border: none; border-radius: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                  <span class="material-symbols-outlined" style="font-size: 18px;">add_shopping_cart</span>
+                  Quick Add
+                </button>
+              </div>
+            </div>
+
+            <!-- Product Info -->
+            <h3 style="font-size: 15px; font-weight: 700; color: #111418; margin-bottom: 6px; transition: color 0.2s;" onmouseover="this.style.color='#0d7ff2'" onmouseout="this.style.color='#111418'">{{ block.settings.title }}</h3>
+
+            <!-- Rating -->
+            <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 8px;">
+              <div style="display: flex; gap: 1px;">
+                {% assign stars = block.settings.rating | default: 5 %}
+                {% for i in (1..5) %}
+                  <span class="material-symbols-outlined" style="font-size: 14px; color: {% if i <= stars %}#f59e0b{% else %}#e2e8f0{% endif %};">star</span>
+                {% endfor %}
+              </div>
+              <span style="font-size: 12px; color: #94a3b8;">({{ block.settings.review_count }})</span>
+            </div>
+
+            <!-- Price -->
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <span style="font-size: 16px; font-weight: 700; color: #111418;">{{ block.settings.price }}</span>
+              {% if block.settings.compare_price != blank %}
+                <span style="font-size: 14px; color: #94a3b8; text-decoration: line-through;">{{ block.settings.compare_price }}</span>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Trending Products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Trending Now"
+    },
+    {
+      "type": "url",
+      "id": "view_all_url",
+      "label": "View All URL"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Product",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Product Name" },
+        { "type": "text", "id": "price", "label": "Price", "default": "$99.99" },
+        { "type": "text", "id": "compare_price", "label": "Compare At Price" },
+        { "type": "text", "id": "badge", "label": "Badge Text" },
+        { "type": "select", "id": "badge_type", "label": "Badge Type", "options": [
+          { "value": "trending", "label": "Trending" },
+          { "value": "discount", "label": "Discount" }
+        ], "default": "trending" },
+        { "type": "range", "id": "rating", "label": "Rating", "min": 1, "max": 5, "step": 1, "default": 5 },
+        { "type": "text", "id": "review_count", "label": "Review Count", "default": "128" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trending Products",
+      "blocks": [
+        { "type": "product", "settings": { "title": "Dashcam Pro 4K AI", "price": "$149.99", "badge": "TRENDING", "badge_type": "trending", "rating": 5, "review_count": "2,847" } },
+        { "type": "product", "settings": { "title": "All-Weather Floor Mats", "price": "$89.99", "badge": "TRENDING", "badge_type": "trending", "rating": 5, "review_count": "1,923" } },
+        { "type": "product", "settings": { "title": "Xenon LED Headlight Kit", "price": "$59.49", "compare_price": "$69.99", "badge": "-15%", "badge_type": "discount", "rating": 4, "review_count": "856" } },
+        { "type": "product", "settings": { "title": "Digital Tire Inflator", "price": "$45.00", "rating": 5, "review_count": "634" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

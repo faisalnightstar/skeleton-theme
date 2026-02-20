@@ -1,0 +1,45 @@
+<!-- CarKit Guarantee Bar Section -->
+<section style="background: #111418; padding: 32px 0;">
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 24px;">
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;">
+      {% for block in section.blocks %}
+        {% if block.type == 'guarantee' %}
+          <div style="display: flex; align-items: center; justify-content: center; gap: 16px; padding: 16px 24px; {% unless forloop.last %}border-right: 1px solid rgba(255,255,255,0.1);{% endunless %}">
+            <span class="material-symbols-outlined" style="font-size: 36px; color: #0d7ff2;">{{ block.settings.icon }}</span>
+            <div>
+              <p style="font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 2px;">{{ block.settings.title }}</p>
+              <p style="font-size: 13px; color: #94a3b8;">{{ block.settings.subtitle }}</p>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Guarantee Bar",
+  "blocks": [
+    {
+      "type": "guarantee",
+      "name": "Guarantee",
+      "settings": [
+        { "type": "text", "id": "icon", "label": "Material Icon", "default": "verified_user" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Verified Authenticity" },
+        { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "100% Genuine Parts" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Guarantee Bar",
+      "blocks": [
+        { "type": "guarantee", "settings": { "icon": "verified_user", "title": "Verified Authenticity", "subtitle": "100% Genuine Parts" } },
+        { "type": "guarantee", "settings": { "icon": "handyman", "title": "Guaranteed Fitment", "subtitle": "Fits your car or money back" } },
+        { "type": "guarantee", "settings": { "icon": "local_shipping", "title": "Fast Delivery", "subtitle": "Free shipping on orders $99+" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

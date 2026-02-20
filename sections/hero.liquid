@@ -1,0 +1,175 @@
+<!-- CarKit Hero Section with Fitment Selector -->
+<section class="hero" style="position: relative; background: #111418; overflow: visible; padding-bottom: 0; margin-bottom: -48px; z-index: 10;">
+
+  <!-- Background Image + Overlay -->
+  <div style="position: absolute; inset: 0; z-index: 1;">
+    {% if section.settings.bg_image != blank %}
+      <img src="{{ section.settings.bg_image | image_url: width: 1920 }}" alt="" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.6;">
+    {% else %}
+      <div style="width: 100%; height: 100%; background: #111418;"></div>
+    {% endif %}
+    <div style="position: absolute; inset: 0; background: linear-gradient(to right, #111418 0%, #11141800 100%);"></div>
+  </div>
+
+  <!-- Content -->
+  <div style="position: relative; z-index: 2; max-width: 1280px; margin: 0 auto; padding: 80px 24px 96px;">
+    <div style="max-width: 640px;">
+
+      <!-- Badge -->
+      <div style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 9999px; margin-bottom: 24px;">
+        <span class="material-symbols-outlined" style="font-size: 16px; color: #0d7ff2;">verified</span>
+        <span style="font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.9);">{{ section.settings.badge_text }}</span>
+      </div>
+
+      <!-- Headline -->
+      <h1 style="font-size: 56px; font-weight: 900; line-height: 1.05; letter-spacing: -0.025em; margin-bottom: 20px;">
+        <span style="color: #fff;">{{ section.settings.headline_line1 }}</span><br>
+        <span style="background: linear-gradient(to bottom, #ffffff, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">{{ section.settings.headline_line2 }}</span>
+      </h1>
+
+      <!-- Subtext -->
+      <p style="font-size: 18px; color: #cbd5e1; line-height: 1.6; margin-bottom: 32px; max-width: 480px;">{{ section.settings.subtext }}</p>
+
+      <!-- CTAs -->
+      <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+        <a href="{{ section.settings.cta1_url }}" style="display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; background: #0d7ff2; color: #fff; font-size: 15px; font-weight: 600; border-radius: 12px; text-decoration: none; box-shadow: 0 4px 16px rgba(13,127,242,0.4); transition: all 0.2s;" onmouseover="this.style.background='#0b6dd4'" onmouseout="this.style.background='#0d7ff2'">
+          {{ section.settings.cta1_text }}
+          <span class="material-symbols-outlined" style="font-size: 18px;">arrow_forward</span>
+        </a>
+        <a href="{{ section.settings.cta2_url }}" style="display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; background: transparent; color: #fff; font-size: 15px; font-weight: 600; border: 1px solid rgba(255,255,255,0.3); border-radius: 12px; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.6)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.3)'">
+          {{ section.settings.cta2_text }}
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fitment Selector (overlapping into next section) -->
+  <div style="position: relative; z-index: 20; max-width: 1280px; margin: 0 auto; padding: 0 24px; transform: translateY(48px);">
+    <div style="background: #fff; border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15); padding: 24px 28px;">
+
+      <!-- Label -->
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
+        <span class="material-symbols-outlined" style="font-size: 18px; color: #64748b;">directions_car</span>
+        <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.05em; color: #64748b; text-transform: uppercase;">Select Your Vehicle</span>
+      </div>
+
+      <!-- Dropdowns Grid -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr auto; gap: 12px; align-items: end;">
+
+        <!-- Year -->
+        <div>
+          <label style="font-size: 12px; font-weight: 600; color: #334155; margin-bottom: 6px; display: block;">Year</label>
+          <div style="position: relative;">
+            <select id="fitment-year" style="width: 100%; height: 48px; padding: 0 36px 0 14px; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: #334155; appearance: none; cursor: pointer; outline: none;" onchange="updateFitmentMakes()">
+              <option value="">Select Year</option>
+            </select>
+            <span class="material-symbols-outlined" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 20px; color: #94a3b8; pointer-events: none;">expand_more</span>
+          </div>
+        </div>
+
+        <!-- Make -->
+        <div>
+          <label style="font-size: 12px; font-weight: 600; color: #334155; margin-bottom: 6px; display: block;">Make</label>
+          <div style="position: relative;">
+            <select id="fitment-make" style="width: 100%; height: 48px; padding: 0 36px 0 14px; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: #334155; appearance: none; cursor: pointer; outline: none;" onchange="updateFitmentModels()" disabled>
+              <option value="">Select Make</option>
+            </select>
+            <span class="material-symbols-outlined" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 20px; color: #94a3b8; pointer-events: none;">expand_more</span>
+          </div>
+        </div>
+
+        <!-- Model -->
+        <div>
+          <label style="font-size: 12px; font-weight: 600; color: #334155; margin-bottom: 6px; display: block;">Model</label>
+          <div style="position: relative;">
+            <select id="fitment-model" style="width: 100%; height: 48px; padding: 0 36px 0 14px; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: #334155; appearance: none; cursor: pointer; outline: none;" onchange="updateFitmentVariants()" disabled>
+              <option value="">Select Model</option>
+            </select>
+            <span class="material-symbols-outlined" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 20px; color: #94a3b8; pointer-events: none;">expand_more</span>
+          </div>
+        </div>
+
+        <!-- Variant -->
+        <div>
+          <label style="font-size: 12px; font-weight: 600; color: #334155; margin-bottom: 6px; display: block;">Variant</label>
+          <div style="position: relative;">
+            <select id="fitment-variant" style="width: 100%; height: 48px; padding: 0 36px 0 14px; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: #334155; appearance: none; cursor: pointer; outline: none;" disabled>
+              <option value="">Select Variant</option>
+            </select>
+            <span class="material-symbols-outlined" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 20px; color: #94a3b8; pointer-events: none;">expand_more</span>
+          </div>
+        </div>
+
+        <!-- Check Fit Button -->
+        <button id="fitment-check" style="height: 48px; padding: 0 24px; background: #111418; color: #fff; font-size: 14px; font-weight: 600; border: none; border-radius: 10px; cursor: pointer; display: flex; align-items: center; gap: 8px; white-space: nowrap; transition: all 0.2s;" onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='#111418'">
+          <span class="material-symbols-outlined" style="font-size: 18px;">check_circle</span>
+          Check Fit
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge Text",
+      "default": "Official Retailer"
+    },
+    {
+      "type": "text",
+      "id": "headline_line1",
+      "label": "Headline Line 1",
+      "default": "Verified Premium"
+    },
+    {
+      "type": "text",
+      "id": "headline_line2",
+      "label": "Headline Line 2",
+      "default": "Car Accessories"
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "Genuine parts and accessories verified for perfect fitment. Trusted by 50,000+ car enthusiasts worldwide."
+    },
+    {
+      "type": "text",
+      "id": "cta1_text",
+      "label": "Primary CTA Text",
+      "default": "Shop Accessories"
+    },
+    {
+      "type": "url",
+      "id": "cta1_url",
+      "label": "Primary CTA URL"
+    },
+    {
+      "type": "text",
+      "id": "cta2_text",
+      "label": "Secondary CTA Text",
+      "default": "Check Fitment"
+    },
+    {
+      "type": "url",
+      "id": "cta2_url",
+      "label": "Secondary CTA URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero"
+    }
+  ]
+}
+{% endschema %}

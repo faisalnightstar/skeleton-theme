@@ -1,0 +1,48 @@
+<!-- CarKit Brands Strip Section -->
+<section style="background: #fff; padding: 48px 0;">
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 24px; text-align: center;">
+
+    <p style="font-size: 11px; font-weight: 600; letter-spacing: 0.1em; color: #94a3b8; text-transform: uppercase; margin-bottom: 24px;">{{ section.settings.label }}</p>
+
+    <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px; opacity: 0.6; transition: opacity 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
+      {% for block in section.blocks %}
+        {% if block.type == 'brand' %}
+          <div style="height: 40px; padding: 0 24px; display: flex; align-items: center; border: 1px solid #e2e8f0; border-radius: 9999px; font-size: 13px; font-weight: 700; color: #334155; letter-spacing: 0.05em; transition: all 0.2s;" onmouseover="this.style.borderColor='#0d7ff2'; this.style.color='#0d7ff2'" onmouseout="this.style.borderColor='#e2e8f0'; this.style.color='#334155'">
+            {{ block.settings.name }}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Brands Strip",
+  "settings": [
+    { "type": "text", "id": "label", "label": "Label", "default": "Trusted by Global Brands" }
+  ],
+  "blocks": [
+    {
+      "type": "brand",
+      "name": "Brand",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Brand Name", "default": "BRAND" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brands Strip",
+      "blocks": [
+        { "type": "brand", "settings": { "name": "BOSCH" } },
+        { "type": "brand", "settings": { "name": "3M" } },
+        { "type": "brand", "settings": { "name": "HELLA" } },
+        { "type": "brand", "settings": { "name": "PHILIPS" } },
+        { "type": "brand", "settings": { "name": "MICHELIN" } },
+        { "type": "brand", "settings": { "name": "MOTUL" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

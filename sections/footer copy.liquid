@@ -1,0 +1,114 @@
+<!-- CarKit Footer Section -->
+<footer style="background: #f5f7f8; border-top: 1px solid #e2e8f0; padding: 64px 0 32px;">
+  <div style="max-width: 1280px; margin: 0 auto; padding: 0 24px;">
+
+    <!-- Main Grid -->
+    <div style="display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px;">
+
+      <!-- Newsletter Column -->
+      <div>
+        <a href="/" style="display: flex; align-items: center; gap: 10px; text-decoration: none; margin-bottom: 16px;">
+          <div style="width: 36px; height: 36px; background: #0d7ff2; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+            <span class="material-symbols-outlined" style="color: #fff; font-size: 20px;">directions_car</span>
+          </div>
+          <span style="font-size: 20px; font-weight: 900; color: #111418;">{{ section.settings.logo_text }}</span>
+        </a>
+        <p style="font-size: 14px; color: #64748b; line-height: 1.6; margin-bottom: 20px;">{{ section.settings.description }}</p>
+        <div style="display: flex; gap: 8px;">
+          <input type="email" placeholder="Enter your email" style="flex: 1; height: 44px; padding: 0 16px; background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 14px; outline: none;">
+          <button style="height: 44px; padding: 0 20px; background: #111418; color: #fff; font-size: 14px; font-weight: 600; border: none; border-radius: 10px; cursor: pointer;">Join</button>
+        </div>
+      </div>
+
+      <!-- Shop Links -->
+      <div>
+        <h4 style="font-size: 13px; font-weight: 700; color: #111418; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px;">Shop</h4>
+        <ul style="list-style: none; padding: 0; margin: 0;">
+          {% for block in section.blocks %}
+            {% if block.type == 'shop_link' %}
+              <li style="margin-bottom: 10px;"><a href="{{ block.settings.url }}" style="font-size: 14px; color: #64748b; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='#0d7ff2'" onmouseout="this.style.color='#64748b'">{{ block.settings.label }}</a></li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+
+      <!-- Support Links -->
+      <div>
+        <h4 style="font-size: 13px; font-weight: 700; color: #111418; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px;">Support</h4>
+        <ul style="list-style: none; padding: 0; margin: 0;">
+          {% for block in section.blocks %}
+            {% if block.type == 'support_link' %}
+              <li style="margin-bottom: 10px;"><a href="{{ block.settings.url }}" style="font-size: 14px; color: #64748b; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='#0d7ff2'" onmouseout="this.style.color='#64748b'">{{ block.settings.label }}</a></li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+
+      <!-- About Links -->
+      <div>
+        <h4 style="font-size: 13px; font-weight: 700; color: #111418; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px;">About</h4>
+        <ul style="list-style: none; padding: 0; margin: 0;">
+          {% for block in section.blocks %}
+            {% if block.type == 'about_link' %}
+              <li style="margin-bottom: 10px;"><a href="{{ block.settings.url }}" style="font-size: 14px; color: #64748b; text-decoration: none; transition: color 0.2s;" onmouseover="this.style.color='#0d7ff2'" onmouseout="this.style.color='#64748b'">{{ block.settings.label }}</a></li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div style="border-top: 1px solid #e2e8f0; padding-top: 24px; display: flex; align-items: center; justify-content: space-between;">
+      <p style="font-size: 13px; color: #94a3b8;">{{ section.settings.copyright }}</p>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <span class="material-symbols-outlined" style="font-size: 28px; color: #94a3b8;">payments</span>
+        <span class="material-symbols-outlined" style="font-size: 28px; color: #94a3b8;">credit_card</span>
+        <span class="material-symbols-outlined" style="font-size: 28px; color: #94a3b8;">account_balance</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    { "type": "text", "id": "logo_text", "label": "Logo Text", "default": "CarKit" },
+    { "type": "textarea", "id": "description", "label": "Description", "default": "Premium verified car accessories and parts. Every product tested for perfect fitment." },
+    { "type": "text", "id": "copyright", "label": "Copyright", "default": "© 2024 CarKit Inc. All rights reserved." }
+  ],
+  "blocks": [
+    { "type": "shop_link", "name": "Shop Link", "settings": [
+      { "type": "text", "id": "label", "label": "Label", "default": "Link" },
+      { "type": "url", "id": "url", "label": "URL" }
+    ]},
+    { "type": "support_link", "name": "Support Link", "settings": [
+      { "type": "text", "id": "label", "label": "Label", "default": "Link" },
+      { "type": "url", "id": "url", "label": "URL" }
+    ]},
+    { "type": "about_link", "name": "About Link", "settings": [
+      { "type": "text", "id": "label", "label": "Label", "default": "Link" },
+      { "type": "url", "id": "url", "label": "URL" }
+    ]}
+  ],
+  "presets": [
+    {
+      "name": "Footer",
+      "blocks": [
+        { "type": "shop_link", "settings": { "label": "All Accessories" } },
+        { "type": "shop_link", "settings": { "label": "New Arrivals" } },
+        { "type": "shop_link", "settings": { "label": "Featured Brands" } },
+        { "type": "shop_link", "settings": { "label": "Gift Cards" } },
+        { "type": "support_link", "settings": { "label": "Help Center" } },
+        { "type": "support_link", "settings": { "label": "Fitment Guarantee" } },
+        { "type": "support_link", "settings": { "label": "Returns & Exchanges" } },
+        { "type": "support_link", "settings": { "label": "Contact Us" } },
+        { "type": "about_link", "settings": { "label": "Our Story" } },
+        { "type": "about_link", "settings": { "label": "Careers" } },
+        { "type": "about_link", "settings": { "label": "Press" } },
+        { "type": "about_link", "settings": { "label": "Privacy Policy" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
