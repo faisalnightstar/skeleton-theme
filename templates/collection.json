@@ -9,12 +9,95 @@
  */
 {
   "sections": {
+    "hero_fnC7F6": {
+      "type": "hero",
+      "name": "Hero",
+      "settings": {
+        "bg_image": "shopify://shop_images/hero-car.jpg",
+        "badge_text": "Official Retailer",
+        "headline_line1": "Verified Premium",
+        "headline_line2": "Car Accessories",
+        "subtext": "Genuine parts and accessories verified for perfect fitment. Trusted by 50,000+ car enthusiasts worldwide.",
+        "cta1_text": "Shop Accessories",
+        "cta1_url": "shopify://collections/all",
+        "cta2_text": "Check Fitment",
+        "cta2_url": ""
+      }
+    },
+    "category_grid_PT4rDJ": {
+      "type": "category-grid",
+      "blocks": {
+        "category_LkBdpj": {
+          "type": "category",
+          "settings": {
+            "label": "Exterior",
+            "icon": "directions_car",
+            "url": ""
+          }
+        },
+        "category_78kWUW": {
+          "type": "category",
+          "settings": {
+            "label": "Interior",
+            "icon": "chair",
+            "url": ""
+          }
+        },
+        "category_ANcyak": {
+          "type": "category",
+          "settings": {
+            "label": "Electronics",
+            "icon": "memory",
+            "url": ""
+          }
+        },
+        "category_4iNyzH": {
+          "type": "category",
+          "settings": {
+            "label": "Performance",
+            "icon": "speed",
+            "url": ""
+          }
+        },
+        "category_UR8JFi": {
+          "type": "category",
+          "settings": {
+            "label": "Cleaning & Care",
+            "icon": "cleaning_services",
+            "url": ""
+          }
+        },
+        "category_h3Nhph": {
+          "type": "category",
+          "settings": {
+            "label": "Tools & Utility",
+            "icon": "build",
+            "url": ""
+          }
+        }
+      },
+      "block_order": [
+        "category_LkBdpj",
+        "category_78kWUW",
+        "category_ANcyak",
+        "category_4iNyzH",
+        "category_UR8JFi",
+        "category_h3Nhph"
+      ],
+      "name": "Category Grid",
+      "settings": {
+        "heading": "Shop by Category",
+        "view_all_url": ""
+      }
+    },
     "main": {
       "type": "collection",
       "settings": {}
     }
   },
   "order": [
+    "hero_fnC7F6",
+    "category_grid_PT4rDJ",
     "main"
   ]
 }
