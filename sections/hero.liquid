@@ -4,7 +4,7 @@
   <!-- Background Image + Overlay -->
   <div style="position: absolute; inset: 0; z-index: 1;">
     {% if section.settings.bg_image != blank %}
-      <img src="{{ section.settings.bg_image | image_url: width: 1920 }}" alt="" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.6;">
+      <img src="{{ section.settings.bg_image | image_url: width: 1920 }}" alt="" width="1920" height="1080" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.6;">
     {% else %}
       <div style="width: 100%; height: 100%; background: #111418;"></div>
     {% endif %}
@@ -16,9 +16,8 @@
     <div style="max-width: 640px;">
 
       <!-- Badge -->
-      <div style="display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 9999px; margin-bottom: 24px;">
-        <span class="material-symbols-outlined" style="font-size: 16px; color: #0d7ff2;">verified</span>
-        <span style="font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.9);">{{ section.settings.badge_text }}</span>
+      <div style="display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; background: #38bdf8; border-radius: 6px; margin-bottom: 24px;">
+        <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.05em; color: #fff; text-transform: uppercase;">{{ section.settings.badge_text }}</span>
       </div>
 
       <!-- Headline -->
@@ -34,9 +33,9 @@
       <div style="display: flex; gap: 12px; flex-wrap: wrap;">
         <a href="{{ section.settings.cta1_url }}" style="display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; background: #0d7ff2; color: #fff; font-size: 15px; font-weight: 600; border-radius: 12px; text-decoration: none; box-shadow: 0 4px 16px rgba(13,127,242,0.4); transition: all 0.2s;" onmouseover="this.style.background='#0b6dd4'" onmouseout="this.style.background='#0d7ff2'">
           {{ section.settings.cta1_text }}
-          <span class="material-symbols-outlined" style="font-size: 18px;">arrow_forward</span>
+          <span class="material-symbols-outlined" style="font-size: 18px;">keyboard_arrow_down</span>
         </a>
-        <a href="{{ section.settings.cta2_url }}" style="display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; background: transparent; color: #fff; font-size: 15px; font-weight: 600; border: 1px solid rgba(255,255,255,0.3); border-radius: 12px; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.borderColor='rgba(255,255,255,0.6)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.3)'">
+        <a href="{{ section.settings.cta2_url }}" style="display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; background: transparent; color: #fff; font-size: 15px; font-weight: 600; border: 1px solid #fff; border-radius: 12px; text-decoration: none; transition: all 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='transparent'">
           {{ section.settings.cta2_text }}
         </a>
       </div>
@@ -45,7 +44,7 @@
 
   <!-- Fitment Selector (overlapping into next section) -->
   <div style="position: relative; z-index: 20; max-width: 1280px; margin: 0 auto; padding: 0 24px; transform: translateY(48px);">
-    <div style="background: #fff; border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15); padding: 24px 28px;">
+    <div style="background: #f5f7f8; border: 1px solid #e2e8f0; border-radius: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); padding: 24px 28px;">
 
       <!-- Label -->
       <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
@@ -53,25 +52,14 @@
         <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.05em; color: #64748b; text-transform: uppercase;">Select Your Vehicle</span>
       </div>
 
-      <!-- Dropdowns Grid -->
+      <!-- Dropdowns Grid: Make, Model, Year, Variant -->
       <div style="display: grid; grid-template-columns: 1fr 1fr 1fr 1fr auto; gap: 12px; align-items: end;">
-
-        <!-- Year -->
-        <div>
-          <label style="font-size: 12px; font-weight: 600; color: #334155; margin-bottom: 6px; display: block;">Year</label>
-          <div style="position: relative;">
-            <select id="fitment-year" style="width: 100%; height: 48px; padding: 0 36px 0 14px; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: #334155; appearance: none; cursor: pointer; outline: none;" onchange="updateFitmentMakes()">
-              <option value="">Select Year</option>
-            </select>
-            <span class="material-symbols-outlined" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 20px; color: #94a3b8; pointer-events: none;">expand_more</span>
-          </div>
-        </div>
 
         <!-- Make -->
         <div>
           <label style="font-size: 12px; font-weight: 600; color: #334155; margin-bottom: 6px; display: block;">Make</label>
           <div style="position: relative;">
-            <select id="fitment-make" style="width: 100%; height: 48px; padding: 0 36px 0 14px; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: #334155; appearance: none; cursor: pointer; outline: none;" onchange="updateFitmentModels()" disabled>
+            <select id="fitment-make" style="width: 100%; height: 48px; padding: 0 36px 0 14px; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: #334155; appearance: none; cursor: pointer; outline: none;" onchange="updateFitmentModels()">
               <option value="">Select Make</option>
             </select>
             <span class="material-symbols-outlined" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 20px; color: #94a3b8; pointer-events: none;">expand_more</span>
@@ -82,8 +70,19 @@
         <div>
           <label style="font-size: 12px; font-weight: 600; color: #334155; margin-bottom: 6px; display: block;">Model</label>
           <div style="position: relative;">
-            <select id="fitment-model" style="width: 100%; height: 48px; padding: 0 36px 0 14px; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: #334155; appearance: none; cursor: pointer; outline: none;" onchange="updateFitmentVariants()" disabled>
+            <select id="fitment-model" style="width: 100%; height: 48px; padding: 0 36px 0 14px; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: #334155; appearance: none; cursor: pointer; outline: none;" onchange="updateFitmentYearVariant()" disabled>
               <option value="">Select Model</option>
+            </select>
+            <span class="material-symbols-outlined" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 20px; color: #94a3b8; pointer-events: none;">expand_more</span>
+          </div>
+        </div>
+
+        <!-- Year -->
+        <div>
+          <label style="font-size: 12px; font-weight: 600; color: #334155; margin-bottom: 6px; display: block;">Year</label>
+          <div style="position: relative;">
+            <select id="fitment-year" style="width: 100%; height: 48px; padding: 0 36px 0 14px; background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 14px; color: #334155; appearance: none; cursor: pointer; outline: none;" onchange="updateFitmentVariants()" disabled>
+              <option value="">Select Year</option>
             </select>
             <span class="material-symbols-outlined" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 20px; color: #94a3b8; pointer-events: none;">expand_more</span>
           </div>
@@ -100,15 +99,17 @@
           </div>
         </div>
 
-        <!-- Check Fit Button -->
+        <!-- Check Parts Button -->
         <button id="fitment-check" style="height: 48px; padding: 0 24px; background: #111418; color: #fff; font-size: 14px; font-weight: 600; border: none; border-radius: 10px; cursor: pointer; display: flex; align-items: center; gap: 8px; white-space: nowrap; transition: all 0.2s;" onmouseover="this.style.background='#1e293b'" onmouseout="this.style.background='#111418'">
-          <span class="material-symbols-outlined" style="font-size: 18px;">check_circle</span>
-          Check Fit
+          <span class="material-symbols-outlined" style="font-size: 18px;">search</span>
+          Check Parts
         </button>
       </div>
     </div>
   </div>
 </section>
+
+<script src="{{ 'fitment.js' | asset_url }}" defer></script>
 
 {% schema %}
 {
@@ -123,7 +124,7 @@
       "type": "text",
       "id": "badge_text",
       "label": "Badge Text",
-      "default": "Official Retailer"
+      "default": "OFFICIAL DEALER"
     },
     {
       "type": "text",
@@ -141,7 +142,7 @@
       "type": "textarea",
       "id": "subtext",
       "label": "Subtext",
-      "default": "Genuine parts and accessories verified for perfect fitment. Trusted by 50,000+ car enthusiasts worldwide."
+      "default": "Upgrade your drive with parts guaranteed to fit. Sourced directly from top manufactures and verified by our experts."
     },
     {
       "type": "text",

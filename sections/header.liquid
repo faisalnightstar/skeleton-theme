@@ -1,54 +1,171 @@
-<header>
-  <h2 class="header__title">
-    {{ shop.name | link_to: routes.root_url }}
-  </h2>
-
-  <div class="header__menu">
-    {% for link in section.settings.menu.links %}
-      {{ link.title | link_to: link.url }}
-    {% endfor %}
-  </div>
-
-  <div class="header__icons">
-    {% if shop.customer_accounts_enabled %}
-      {{ 'icon-account.svg' | inline_asset_content | link_to: routes.account_url }}
-    {% endif %}
-
-    <a href="{{ routes.cart_url }}">
-      {% if cart.item_count > 0 %}
-        <sup>{{ cart.item_count }}</sup>
-      {% endif %}
-
-      {{ 'icon-cart.svg' | inline_asset_content }}
+<header class="carkit-header">
+  <div class="carkit-header__inner">
+    <a href="{{ routes.root_url }}" class="carkit-header__logo">
+      <span class="carkit-header__logo-icon">
+        <span class="material-symbols-outlined">build</span>
+      </span>
+      <span class="carkit-header__logo-text">CarKit</span>
     </a>
+
+    <div class="carkit-header__search">
+      <span class="material-symbols-outlined carkit-header__search-icon">search</span>
+      <form action="{{ routes.search_url }}" method="get" role="search" class="carkit-header__search-form">
+        <input
+          type="search"
+          name="q"
+          placeholder="Search for parts, accessories, brands..."
+          class="carkit-header__search-input"
+          aria-label="Search"
+        >
+      </form>
+    </div>
+
+    <nav class="carkit-header__nav">
+      <a href="{{ routes.all_products_collection_url }}">Shop</a>
+      <a href="/pages/returns">Returns</a>
+      <a href="/pages/support">Support</a>
+    </nav>
+
+    <div class="carkit-header__icons">
+      {% if shop.customer_accounts_enabled %}
+        <a href="{{ routes.account_url }}" class="carkit-header__icon" aria-label="Account">
+          <span class="material-symbols-outlined">person</span>
+        </a>
+      {% endif %}
+      <a href="{{ routes.cart_url }}" class="carkit-header__icon carkit-header__cart" aria-label="Cart">
+        <span class="material-symbols-outlined">shopping_cart</span>
+        {% if cart.item_count > 0 %}
+          <span class="carkit-header__cart-badge">{{ cart.item_count }}</span>
+        {% endif %}
+      </a>
+    </div>
   </div>
 </header>
 
 {% stylesheet %}
-  header {
-    height: 5rem;
+  .carkit-header {
+    background: #e5e7eb;
+    height: 72px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
   }
-  header a {
-    position: relative;
-    text-decoration: none;
-    color: var(--color-foreground);
-  }
-  header a sup {
-    position: absolute;
-    left: 100%;
-    overflow: hidden;
-    max-width: var(--page-margin);
-  }
-  header svg {
-    width: 2rem;
-  }
-  header .header__menu,
-  header .header__icons {
+  .carkit-header__inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+    width: 100%;
     display: flex;
-    gap: 1rem;
+    align-items: center;
+    gap: 32px;
+  }
+  .carkit-header__logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: #0d7ff2;
+    font-size: 20px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .carkit-header__logo-icon {
+    width: 36px;
+    height: 36px;
+    background: #0d7ff2;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+  }
+  .carkit-header__logo-icon .material-symbols-outlined {
+    font-size: 20px;
+  }
+  .carkit-header__search {
+    flex: 1;
+    max-width: 480px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .carkit-header__search-form {
+    width: 100%;
+  }
+  .carkit-header__search-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: #9ca3af;
+    pointer-events: none;
+  }
+  .carkit-header__search-input {
+    width: 100%;
+    height: 44px;
+    padding: 0 16px 0 44px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 14px;
+    color: #111827;
+    outline: none;
+  }
+  .carkit-header__search-input::placeholder {
+    color: #9ca3af;
+  }
+  .carkit-header__search-input:focus {
+    border-color: #0d7ff2;
+  }
+  .carkit-header__nav {
+    display: flex;
+    gap: 24px;
+  }
+  .carkit-header__nav a {
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+    text-decoration: none;
+  }
+  .carkit-header__nav a:hover {
+    color: #0d7ff2;
+  }
+  .carkit-header__icons {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .carkit-header__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #374151;
+    text-decoration: none;
+    position: relative;
+  }
+  .carkit-header__icon .material-symbols-outlined {
+    font-size: 24px;
+  }
+  .carkit-header__icon:hover {
+    color: #0d7ff2;
+  }
+  .carkit-header__cart-badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    background: #111827;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 {% endstylesheet %}
 

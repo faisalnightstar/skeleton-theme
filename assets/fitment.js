@@ -1,21 +1,13 @@
 /**
  * CarKit Fitment Selector — Cascading Dropdown Logic
- * Vanilla JS with mock data for demonstration
+ * Order: Make → Model → Year → Variant
  */
 
 (function() {
   'use strict';
 
-  // Mock fitment data
   var fitmentData = {
-    years: ['2024', '2023', '2022', '2021', '2020', '2019', '2018', '2017', '2016', '2015'],
-    makes: {
-      '2024': ['BMW', 'Mercedes-Benz', 'Audi', 'Toyota', 'Honda', 'Ford', 'Chevrolet', 'Porsche'],
-      '2023': ['BMW', 'Mercedes-Benz', 'Audi', 'Toyota', 'Honda', 'Ford', 'Chevrolet', 'Porsche'],
-      '2022': ['BMW', 'Mercedes-Benz', 'Audi', 'Toyota', 'Honda', 'Ford'],
-      '2021': ['BMW', 'Mercedes-Benz', 'Audi', 'Toyota', 'Honda'],
-      '2020': ['BMW', 'Mercedes-Benz', 'Audi', 'Toyota']
-    },
+    makes: ['BMW', 'Mercedes-Benz', 'Audi', 'Toyota', 'Honda', 'Ford', 'Chevrolet', 'Porsche'],
     models: {
       'BMW': ['3 Series', '5 Series', 'X3', 'X5', 'M3', 'M4'],
       'Mercedes-Benz': ['C-Class', 'E-Class', 'GLC', 'GLE', 'AMG GT'],
@@ -26,6 +18,7 @@
       'Chevrolet': ['Camaro', 'Corvette', 'Silverado', 'Tahoe'],
       'Porsche': ['911', 'Cayenne', 'Macan', 'Taycan']
     },
+    years: ['2024', '2023', '2022', '2021', '2020', '2019', '2018', '2017', '2016', '2015'],
     variants: {
       '3 Series': ['320i', '330i', '340i', 'M340i'],
       '5 Series': ['530i', '540i', 'M550i'],
@@ -60,35 +53,24 @@
     selectEl.disabled = true;
   }
 
-  // Initialize on DOM ready
   document.addEventListener('DOMContentLoaded', function() {
-    var yearEl = document.getElementById('fitment-year');
     var makeEl = document.getElementById('fitment-make');
     var modelEl = document.getElementById('fitment-model');
+    var yearEl = document.getElementById('fitment-year');
     var variantEl = document.getElementById('fitment-variant');
     var checkBtn = document.getElementById('fitment-check');
 
-    if (!yearEl || !makeEl || !modelEl || !variantEl) return;
+    if (!makeEl || !modelEl || !yearEl || !variantEl) return;
 
-    // Populate years
-    populateSelect(yearEl, fitmentData.years, 'Select Year');
+    populateSelect(makeEl, fitmentData.makes, 'Select Make');
+    resetSelect(modelEl, 'Select Model');
+    resetSelect(yearEl, 'Select Year');
+    resetSelect(variantEl, 'Select Variant');
 
-    // Year change → populate makes
-    window.updateFitmentMakes = function() {
-      var year = yearEl.value;
-      resetSelect(makeEl, 'Select Make');
-      resetSelect(modelEl, 'Select Model');
-      resetSelect(variantEl, 'Select Variant');
-
-      if (year && fitmentData.makes[year]) {
-        populateSelect(makeEl, fitmentData.makes[year], 'Select Make');
-      }
-    };
-
-    // Make change → populate models
     window.updateFitmentModels = function() {
       var make = makeEl.value;
       resetSelect(modelEl, 'Select Model');
+      resetSelect(yearEl, 'Select Year');
       resetSelect(variantEl, 'Select Variant');
 
       if (make && fitmentData.models[make]) {
@@ -96,7 +78,19 @@
       }
     };
 
-    // Model change → populate variants
+    window.updateFitmentYearVariant = function() {
+      var model = modelEl.value;
+      resetSelect(yearEl, 'Select Year');
+      resetSelect(variantEl, 'Select Variant');
+
+      if (model) {
+        populateSelect(yearEl, fitmentData.years, 'Select Year');
+        if (fitmentData.variants[model]) {
+          populateSelect(variantEl, fitmentData.variants[model], 'Select Variant');
+        }
+      }
+    };
+
     window.updateFitmentVariants = function() {
       var model = modelEl.value;
       resetSelect(variantEl, 'Select Variant');
@@ -106,21 +100,19 @@
       }
     };
 
-    // Check Fit button
     if (checkBtn) {
       checkBtn.addEventListener('click', function() {
-        var year = yearEl.value;
         var make = makeEl.value;
         var model = modelEl.value;
+        var year = yearEl.value;
         var variant = variantEl.value;
 
-        if (!year || !make || !model) {
-          alert('Please select at least Year, Make, and Model.');
+        if (!make || !model) {
+          alert('Please select at least Make and Model.');
           return;
         }
 
-        var vehicle = year + ' ' + make + ' ' + model + (variant ? ' ' + variant : '');
-        // In a real theme, redirect to filtered collection
+        var vehicle = (year ? year + ' ' : '') + make + ' ' + model + (variant ? ' ' + variant : '');
         window.location.href = '/collections/all?fitment=' + encodeURIComponent(vehicle);
       });
     }

@@ -1,39 +1,188 @@
-<footer>
-  <div class="footer__copyright">
-    &copy;
-    {{ 'now' | date: '%Y' }}
-    {{ shop.name | link_to: routes.root_url }}, {{ powered_by_link }}
-  </div>
+<footer class="carkit-footer">
+  <div class="carkit-footer__inner">
+    <div class="carkit-footer__grid">
+      <!-- CarKit / Newsletter -->
+      <div class="carkit-footer__column carkit-footer__newsletter">
+        <a href="{{ routes.root_url }}" class="carkit-footer__logo">
+          <span class="carkit-footer__logo-icon">
+            <span class="material-symbols-outlined">build</span>
+          </span>
+          <span class="carkit-footer__logo-text">CarKit</span>
+        </a>
+        <p class="carkit-footer__newsletter-text">Subscribe to our newsletter for new products, trends and exclusive offers.</p>
+        <form action="/contact#contact_form" method="post" class="carkit-footer__newsletter-form">
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <input type="email" name="contact[email]" placeholder="Email address" class="carkit-footer__newsletter-input" required aria-label="Email address">
+          <button type="submit" class="carkit-footer__newsletter-btn">Join</button>
+        </form>
+      </div>
 
-  <div class="footer__links">
-    {% for link in section.settings.menu.links %}
-      {{ link.title | link_to: link.url }}
-    {% endfor %}
-  </div>
+      <!-- Shop -->
+      <div class="carkit-footer__column">
+        <h4 class="carkit-footer__heading">Shop</h4>
+        <ul class="carkit-footer__links">
+          <li><a href="{{ routes.all_products_collection_url }}">All Accessories</a></li>
+          <li><a href="{{ routes.collections_url }}/new-arrivals">New Arrivals</a></li>
+          <li><a href="{{ routes.collections_url }}/featured-brands">Featured Brands</a></li>
+          <li><a href="/products/gift-card">Gift Cards</a></li>
+        </ul>
+      </div>
 
-  <div class="footer__payment">
-    {% if section.settings.show_payment_icons %}
-      {% for type in shop.enabled_payment_types %}
-        {{ type | payment_type_svg_tag }}
-      {% endfor %}
-    {% endif %}
+      <!-- Support -->
+      <div class="carkit-footer__column">
+        <h4 class="carkit-footer__heading">Support</h4>
+        <ul class="carkit-footer__links">
+          <li><a href="/pages/help">Help Center</a></li>
+          <li><a href="/pages/fitment-guarantee">Fitment Guarantee</a></li>
+          <li><a href="/pages/returns">Returns & Exchanges</a></li>
+          <li><a href="/pages/contact">Contact Us</a></li>
+        </ul>
+      </div>
+
+      <!-- About -->
+      <div class="carkit-footer__column">
+        <h4 class="carkit-footer__heading">About</h4>
+        <ul class="carkit-footer__links">
+          <li><a href="/pages/about">Our Story</a></li>
+          <li><a href="/pages/careers">Careers</a></li>
+          <li><a href="/pages/press">Press</a></li>
+          <li><a href="/policies/privacy-policy">Privacy Policy</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="carkit-footer__copyright">
+      © {{ 'now' | date: '%Y' }} CarKit Inc. All rights reserved.
+    </div>
   </div>
 </footer>
 
 {% stylesheet %}
-  footer {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 2rem;
+  .carkit-footer {
+    background: #111418;
+    color: #94a3b8;
+    padding: 64px 0 32px;
   }
-  footer a {
+  .carkit-footer__inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+  .carkit-footer__grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+    gap: 48px;
+    margin-bottom: 48px;
+  }
+  .carkit-footer__column {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .carkit-footer__logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     text-decoration: none;
-    color: var(--color-foreground);
+    color: #0d7ff2;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
   }
-  footer .footer__links,
-  footer .footer__payment {
+  .carkit-footer__logo-icon {
+    width: 36px;
+    height: 36px;
+    background: #0d7ff2;
+    border-radius: 8px;
     display: flex;
-    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+  }
+  .carkit-footer__logo-icon .material-symbols-outlined {
+    font-size: 20px;
+  }
+  .carkit-footer__newsletter-text {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #94a3b8;
+    margin-bottom: 16px;
+    max-width: 320px;
+  }
+  .carkit-footer__newsletter-form {
+    display: flex;
+    gap: 8px;
+    max-width: 360px;
+  }
+  .carkit-footer__newsletter-input {
+    flex: 1;
+    height: 44px;
+    padding: 0 16px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+    font-size: 14px;
+    color: #fff;
+    outline: none;
+  }
+  .carkit-footer__newsletter-input::placeholder {
+    color: #64748b;
+  }
+  .carkit-footer__newsletter-input:focus {
+    border-color: #0d7ff2;
+  }
+  .carkit-footer__newsletter-btn {
+    height: 44px;
+    padding: 0 24px;
+    background: #111827;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .carkit-footer__newsletter-btn:hover {
+    background: #1e293b;
+  }
+  .carkit-footer__heading {
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 8px;
+  }
+  .carkit-footer__links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .carkit-footer__links li {
+    margin-bottom: 8px;
+  }
+  .carkit-footer__links a {
+    font-size: 14px;
+    color: #94a3b8;
+    text-decoration: none;
+  }
+  .carkit-footer__links a:hover {
+    color: #fff;
+  }
+  .carkit-footer__copyright {
+    padding-top: 24px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    font-size: 13px;
+    color: #64748b;
+  }
+  @media (max-width: 768px) {
+    .carkit-footer__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 480px) {
+    .carkit-footer__grid {
+      grid-template-columns: 1fr;
+    }
   }
 {% endstylesheet %}
 
