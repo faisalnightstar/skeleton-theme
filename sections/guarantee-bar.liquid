@@ -1,14 +1,18 @@
-<!-- CarKit Feature Callouts Section (light grey background) -->
-<section style="background: #f5f7f8; padding: 48px 0;">
+<!-- CarKit Feature Callouts Section -->
+<section style="background: {{ section.settings.section_bg }}; padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;">
   <div style="max-width: 1280px; margin: 0 auto; padding: 0 24px;">
-    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;">
+    {% assign col_count = section.blocks.size %}
+    {% if col_count == 0 %}
+      {% assign col_count = 1 %}
+    {% endif %}
+    <div style="display: grid; grid-template-columns: repeat({{ col_count }}, 1fr); gap: 0;">
       {% for block in section.blocks %}
         {% if block.type == 'guarantee' %}
-          <div style="display: flex; align-items: center; justify-content: center; gap: 16px; padding: 24px 32px; {% unless forloop.last %}border-right: 1px solid #e2e8f0;{% endunless %}">
-            <span class="material-symbols-outlined" style="font-size: 40px; color: #0d7ff2;">{{ block.settings.icon }}</span>
+          <div {{ block.shopify_attributes }} style="display: flex; align-items: center; justify-content: center; gap: {{ section.settings.icon_gap }}px; padding: {{ section.settings.block_padding }}px {{ section.settings.block_padding_h }}px; {% unless forloop.last %}border-right: 1px solid {{ section.settings.border_color }};{% endunless %}">
+            <span class="material-symbols-outlined" style="font-size: {{ section.settings.icon_size }}px; color: {{ block.settings.icon_color | default: section.settings.icon_color }};">{{ block.settings.icon }}</span>
             <div>
-              <p style="font-size: 15px; font-weight: 700; color: #111418; margin-bottom: 4px;">{{ block.settings.title }}</p>
-              <p style="font-size: 14px; color: #64748b;">{{ block.settings.subtitle }}</p>
+              <p style="font-size: {{ section.settings.title_size }}px; font-weight: 700; color: {{ block.settings.title_color | default: section.settings.title_color }}; margin-bottom: 4px;">{{ block.settings.title }}</p>
+              <p style="font-size: {{ section.settings.subtitle_size }}px; color: {{ block.settings.subtitle_color | default: section.settings.subtitle_color }};">{{ block.settings.subtitle }}</p>
             </div>
           </div>
         {% endif %}
@@ -20,14 +24,34 @@
 {% schema %}
 {
   "name": "Guarantee Bar",
+  "settings": [
+    { "type": "header", "content": "Section" },
+    { "type": "color", "id": "section_bg", "label": "Background", "default": "#f5f7f8" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 24, "max": 80, "step": 8, "default": 48, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 24, "max": 80, "step": 8, "default": 48, "unit": "px" },
+    { "type": "color", "id": "border_color", "label": "Border between items", "default": "#e2e8f0" },
+    { "type": "header", "content": "Blocks" },
+    { "type": "range", "id": "icon_size", "label": "Icon size", "min": 24, "max": 56, "step": 4, "default": 40, "unit": "px" },
+    { "type": "color", "id": "icon_color", "label": "Icon color", "default": "#0d7ff2" },
+    { "type": "range", "id": "icon_gap", "label": "Gap between icon and text", "min": 8, "max": 24, "step": 4, "default": 16, "unit": "px" },
+    { "type": "range", "id": "block_padding", "label": "Block vertical padding", "min": 16, "max": 48, "step": 4, "default": 24, "unit": "px" },
+    { "type": "range", "id": "block_padding_h", "label": "Block horizontal padding", "min": 16, "max": 48, "step": 4, "default": 32, "unit": "px" },
+    { "type": "range", "id": "title_size", "label": "Title size", "min": 12, "max": 20, "step": 1, "default": 15, "unit": "px" },
+    { "type": "color", "id": "title_color", "label": "Title color", "default": "#111418" },
+    { "type": "range", "id": "subtitle_size", "label": "Subtitle size", "min": 12, "max": 18, "step": 1, "default": 14, "unit": "px" },
+    { "type": "color", "id": "subtitle_color", "label": "Subtitle color", "default": "#64748b" }
+  ],
   "blocks": [
     {
       "type": "guarantee",
       "name": "Guarantee",
       "settings": [
         { "type": "text", "id": "icon", "label": "Material Icon", "default": "verified_user" },
+        { "type": "color", "id": "icon_color", "label": "Icon color (override)" },
         { "type": "text", "id": "title", "label": "Title", "default": "Verified Authenticity" },
-        { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "100% Genuine Parts" }
+        { "type": "color", "id": "title_color", "label": "Title color (override)" },
+        { "type": "text", "id": "subtitle", "label": "Subtitle", "default": "100% Genuine Parts" },
+        { "type": "color", "id": "subtitle_color", "label": "Subtitle color (override)" }
       ]
     }
   ],

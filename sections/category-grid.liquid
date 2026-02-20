@@ -1,25 +1,36 @@
 <!-- CarKit Category Grid Section -->
-<section style="background: #f5f7f8; padding: 96px 0 64px;">
+<section style="background: {{ section.settings.section_bg }}; padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;">
   <div style="max-width: 1280px; margin: 0 auto; padding: 0 24px;">
 
-    <!-- Header -->
     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px;">
-      <h2 style="font-size: 30px; font-weight: 900; color: #111418; letter-spacing: -0.025em;">{{ section.settings.heading }}</h2>
-      <a href="{{ section.settings.view_all_url }}" style="display: inline-flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 600; color: #0d7ff2; text-decoration: none; transition: gap 0.2s;" onmouseover="this.style.gap='8px'" onmouseout="this.style.gap='4px'">
-        View All
-        <span class="material-symbols-outlined" style="font-size: 18px;">arrow_forward</span>
-      </a>
+      <h2 style="font-size: {{ section.settings.heading_size }}px; font-weight: 900; color: {{ section.settings.heading_color }}; letter-spacing: -0.025em;">{{ section.settings.heading }}</h2>
+      {% if section.settings.show_view_all and section.settings.view_all_url != blank %}
+        <a href="{{ section.settings.view_all_url }}" style="display: inline-flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 600; color: {{ section.settings.view_all_color }}; text-decoration: none;">
+          {{ section.settings.view_all_text }}
+          <span class="material-symbols-outlined" style="font-size: 18px;">arrow_forward</span>
+        </a>
+      {% endif %}
     </div>
 
-    <!-- Grid -->
-    <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px;">
+    <div style="display: grid; grid-template-columns: repeat({{ section.settings.columns }}, 1fr); gap: {{ section.settings.gap }}px;">
       {% for block in section.blocks %}
         {% if block.type == 'category' %}
-          <a href="{{ block.settings.url }}" class="category-card" style="display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 28px 16px; background: #fff; border: 1px solid #e2e8f0; border-radius: 16px; text-decoration: none; transition: all 0.2s; cursor: pointer;" onmouseover="this.style.borderColor='#0d7ff2'; this.style.boxShadow='0 4px 12px rgba(13,127,242,0.1)'" onmouseout="this.style.borderColor='#e2e8f0'; this.style.boxShadow='none'">
-            <div style="width: 64px; height: 64px; background: #f1f5f9; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-              <span class="material-symbols-outlined" style="font-size: 28px; color: #475569;">{{ block.settings.icon }}</span>
+          {% assign card_bg = block.settings.card_bg_override | default: section.settings.card_bg %}
+          {% assign card_border = block.settings.card_border_override | default: section.settings.card_border %}
+          {% assign icon_bg = block.settings.icon_bg_override | default: section.settings.icon_bg %}
+          {% assign icon_color = block.settings.icon_color_override | default: section.settings.icon_color %}
+          {% assign label_color = block.settings.label_color_override | default: section.settings.label_color %}
+          <a href="{{ block.settings.url | default: '#' }}" {{ block.shopify_attributes }} style="display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 28px 16px; background: {{ card_bg }}; border: 1px solid {{ card_border }}; border-radius: {{ section.settings.card_radius }}px; text-decoration: none; transition: all 0.2s;"
+             onmouseover="this.style.borderColor='{{ section.settings.card_hover_border }}'; this.style.boxShadow='0 4px 12px rgba(0,0,0,0.08)'"
+             onmouseout="this.style.borderColor='{{ card_border }}'; this.style.boxShadow='none'">
+            <div style="width: {{ section.settings.icon_size }}px; height: {{ section.settings.icon_size }}px; background: {{ icon_bg }}; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+              {% if block.settings.icon_image != blank %}
+                <img src="{{ block.settings.icon_image | image_url: width: 128 }}" alt="" width="64" height="64" style="width: 100%; height: 100%; object-fit: contain; padding: 12px;">
+              {% else %}
+                <span class="material-symbols-outlined" style="font-size: {{ section.settings.icon_font_size }}px; color: {{ icon_color }};">{{ block.settings.icon }}</span>
+              {% endif %}
             </div>
-            <span style="font-size: 14px; font-weight: 600; color: #334155;">{{ block.settings.label }}</span>
+            <span style="font-size: {{ section.settings.label_size }}px; font-weight: 600; color: {{ label_color }};">{{ block.settings.label }}</span>
           </a>
         {% endif %}
       {% endfor %}
@@ -31,40 +42,48 @@
 {
   "name": "Category Grid",
   "settings": [
-    {
-      "type": "text",
-      "id": "heading",
-      "label": "Heading",
-      "default": "Shop by Category"
-    },
-    {
-      "type": "url",
-      "id": "view_all_url",
-      "label": "View All URL"
-    }
+    { "type": "header", "content": "Section" },
+    { "type": "color", "id": "section_bg", "label": "Background", "default": "#f5f7f8" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 32, "max": 120, "step": 8, "default": 96, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 32, "max": 120, "step": 8, "default": 64, "unit": "px" },
+    { "type": "header", "content": "Heading" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Shop by Category" },
+    { "type": "range", "id": "heading_size", "label": "Heading size", "min": 20, "max": 48, "step": 2, "default": 30, "unit": "px" },
+    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#111418" },
+    { "type": "header", "content": "View All link" },
+    { "type": "checkbox", "id": "show_view_all", "label": "Show View All link", "default": true },
+    { "type": "text", "id": "view_all_text", "label": "View All text", "default": "View All" },
+    { "type": "url", "id": "view_all_url", "label": "View All URL" },
+    { "type": "color", "id": "view_all_color", "label": "View All color", "default": "#0d7ff2" },
+    { "type": "header", "content": "Grid" },
+    { "type": "range", "id": "columns", "label": "Columns", "min": 2, "max": 6, "step": 1, "default": 6 },
+    { "type": "range", "id": "gap", "label": "Gap between cards", "min": 8, "max": 32, "step": 4, "default": 16, "unit": "px" },
+    { "type": "header", "content": "Category cards" },
+    { "type": "color", "id": "card_bg", "label": "Card background", "default": "#ffffff" },
+    { "type": "color", "id": "card_border", "label": "Card border", "default": "#e2e8f0" },
+    { "type": "color", "id": "card_hover_border", "label": "Card hover border", "default": "#0d7ff2" },
+    { "type": "range", "id": "card_radius", "label": "Card border radius", "min": 0, "max": 24, "step": 2, "default": 16, "unit": "px" },
+    { "type": "color", "id": "icon_bg", "label": "Icon background", "default": "#f1f5f9" },
+    { "type": "color", "id": "icon_color", "label": "Icon color", "default": "#475569" },
+    { "type": "range", "id": "icon_size", "label": "Icon size", "min": 40, "max": 96, "step": 8, "default": 64, "unit": "px" },
+    { "type": "range", "id": "icon_font_size", "label": "Icon font size", "min": 20, "max": 40, "step": 2, "default": 28, "unit": "px" },
+    { "type": "color", "id": "label_color", "label": "Label color", "default": "#334155" },
+    { "type": "range", "id": "label_size", "label": "Label size", "min": 12, "max": 18, "step": 1, "default": 14, "unit": "px" }
   ],
   "blocks": [
     {
       "type": "category",
       "name": "Category",
       "settings": [
-        {
-          "type": "text",
-          "id": "label",
-          "label": "Label",
-          "default": "Category"
-        },
-        {
-          "type": "text",
-          "id": "icon",
-          "label": "Material Icon Name",
-          "default": "category"
-        },
-        {
-          "type": "url",
-          "id": "url",
-          "label": "URL"
-        }
+        { "type": "text", "id": "label", "label": "Label", "default": "Category" },
+        { "type": "image_picker", "id": "icon_image", "label": "Icon image", "info": "Overrides Material icon" },
+        { "type": "text", "id": "icon", "label": "Material Icon name", "default": "category" },
+        { "type": "color", "id": "icon_bg_override", "label": "Icon background (override)" },
+        { "type": "color", "id": "icon_color_override", "label": "Icon color (override)" },
+        { "type": "color", "id": "label_color_override", "label": "Label color (override)" },
+        { "type": "color", "id": "card_bg_override", "label": "Card background (override)" },
+        { "type": "color", "id": "card_border_override", "label": "Card border (override)" },
+        { "type": "url", "id": "url", "label": "Link" }
       ]
     }
   ],

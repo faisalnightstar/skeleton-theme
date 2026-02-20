@@ -1,205 +1,169 @@
-<footer class="carkit-footer">
+<footer class="carkit-footer" style="background: {{ section.settings.footer_bg }}; padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;">
   <div class="carkit-footer__inner">
-    <div class="carkit-footer__grid">
-      <!-- CarKit / Newsletter -->
-      <div class="carkit-footer__column carkit-footer__newsletter">
-        <a href="{{ routes.root_url }}" class="carkit-footer__logo">
-          <span class="carkit-footer__logo-icon">
-            <span class="material-symbols-outlined">build</span>
-          </span>
-          <span class="carkit-footer__logo-text">CarKit</span>
-        </a>
-        <p class="carkit-footer__newsletter-text">Subscribe to our newsletter for new products, trends and exclusive offers.</p>
-        <form action="/contact#contact_form" method="post" class="carkit-footer__newsletter-form">
-          <input type="hidden" name="contact[tags]" value="newsletter">
-          <input type="email" name="contact[email]" placeholder="Email address" class="carkit-footer__newsletter-input" required aria-label="Email address">
-          <button type="submit" class="carkit-footer__newsletter-btn">Join</button>
-        </form>
-      </div>
+    <div class="carkit-footer__grid" style="grid-template-columns: {{ section.settings.columns }}; gap: {{ section.settings.gap }}px; margin-bottom: {{ section.settings.gap }}px;">
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'newsletter' %}
+            <div {{ block.shopify_attributes }} class="carkit-footer__column carkit-footer__newsletter">
+              {% if block.settings.show_logo %}
+                <a href="{{ routes.root_url }}" class="carkit-footer__logo" style="color: {{ block.settings.logo_color }};">
+                  {% if block.settings.logo_image != blank %}
+                    <img src="{{ block.settings.logo_image | image_url: width: 150 }}" alt="{{ block.settings.logo_text | escape }}" class="carkit-footer__logo-img" width="120" height="40">
+                  {% else %}
+                    <span class="carkit-footer__logo-icon" style="background: {{ block.settings.logo_color }};">
+                      <span class="material-symbols-outlined">{{ block.settings.logo_icon }}</span>
+                    </span>
+                    <span class="carkit-footer__logo-text">{{ block.settings.logo_text }}</span>
+                  {% endif %}
+                </a>
+              {% endif %}
+              {% if block.settings.newsletter_text != blank %}
+                <p class="carkit-footer__newsletter-text" style="color: {{ block.settings.text_color }};">{{ block.settings.newsletter_text }}</p>
+              {% endif %}
+              <form action="/contact#contact_form" method="post" class="carkit-footer__newsletter-form">
+                <input type="hidden" name="contact[tags]" value="newsletter">
+                <input type="email" name="contact[email]" placeholder="{{ block.settings.email_placeholder }}" class="carkit-footer__newsletter-input" required aria-label="Email address" style="background: {{ block.settings.input_bg }}; border-color: {{ block.settings.input_border }}; color: {{ block.settings.input_color }};">
+                <button type="submit" class="carkit-footer__newsletter-btn" style="background: {{ block.settings.button_bg }}; color: {{ block.settings.button_color }};">{{ block.settings.button_text }}</button>
+              </form>
+            </div>
 
-      <!-- Shop -->
-      <div class="carkit-footer__column">
-        <h4 class="carkit-footer__heading">Shop</h4>
-        <ul class="carkit-footer__links">
-          <li><a href="{{ routes.all_products_collection_url }}">All Accessories</a></li>
-          <li><a href="{{ routes.collections_url }}/new-arrivals">New Arrivals</a></li>
-          <li><a href="{{ routes.collections_url }}/featured-brands">Featured Brands</a></li>
-          <li><a href="/products/gift-card">Gift Cards</a></li>
-        </ul>
-      </div>
+          {% when 'menu' %}
+            <div {{ block.shopify_attributes }} class="carkit-footer__column">
+              <h4 class="carkit-footer__heading" style="color: {{ block.settings.heading_color }};">{{ block.settings.heading }}</h4>
+              {% if block.settings.menu != blank %}
+                <ul class="carkit-footer__links">
+                  {% for link in block.settings.menu.links %}
+                    <li><a href="{{ link.url }}" style="color: {{ block.settings.link_color }};">{{ link.title }}</a></li>
+                  {% endfor %}
+                </ul>
+              {% else %}
+                <ul class="carkit-footer__links">
+                  {% if block.settings.link_1_label != blank %}<li><a href="{{ block.settings.link_1_url | default: '#' }}" style="color: {{ block.settings.link_color }};">{{ block.settings.link_1_label }}</a></li>{% endif %}
+                  {% if block.settings.link_2_label != blank %}<li><a href="{{ block.settings.link_2_url | default: '#' }}" style="color: {{ block.settings.link_color }};">{{ block.settings.link_2_label }}</a></li>{% endif %}
+                  {% if block.settings.link_3_label != blank %}<li><a href="{{ block.settings.link_3_url | default: '#' }}" style="color: {{ block.settings.link_color }};">{{ block.settings.link_3_label }}</a></li>{% endif %}
+                  {% if block.settings.link_4_label != blank %}<li><a href="{{ block.settings.link_4_url | default: '#' }}" style="color: {{ block.settings.link_color }};">{{ block.settings.link_4_label }}</a></li>{% endif %}
+                  {% if block.settings.link_5_label != blank %}<li><a href="{{ block.settings.link_5_url | default: '#' }}" style="color: {{ block.settings.link_color }};">{{ block.settings.link_5_label }}</a></li>{% endif %}
+                </ul>
+              {% endif %}
+            </div>
 
-      <!-- Support -->
-      <div class="carkit-footer__column">
-        <h4 class="carkit-footer__heading">Support</h4>
-        <ul class="carkit-footer__links">
-          <li><a href="/pages/help">Help Center</a></li>
-          <li><a href="/pages/fitment-guarantee">Fitment Guarantee</a></li>
-          <li><a href="/pages/returns">Returns & Exchanges</a></li>
-          <li><a href="/pages/contact">Contact Us</a></li>
-        </ul>
-      </div>
-
-      <!-- About -->
-      <div class="carkit-footer__column">
-        <h4 class="carkit-footer__heading">About</h4>
-        <ul class="carkit-footer__links">
-          <li><a href="/pages/about">Our Story</a></li>
-          <li><a href="/pages/careers">Careers</a></li>
-          <li><a href="/pages/press">Press</a></li>
-          <li><a href="/policies/privacy-policy">Privacy Policy</a></li>
-        </ul>
-      </div>
+          {% when 'text' %}
+            <div {{ block.shopify_attributes }} class="carkit-footer__column">
+              <h4 class="carkit-footer__heading" style="color: {{ block.settings.heading_color }};">{{ block.settings.heading }}</h4>
+              <div class="carkit-footer__text" style="color: {{ block.settings.text_color }}; font-size: 14px; line-height: 1.6;">{{ block.settings.content }}</div>
+            </div>
+        {% endcase %}
+      {% endfor %}
     </div>
 
-    <div class="carkit-footer__copyright">
-      © {{ 'now' | date: '%Y' }} CarKit Inc. All rights reserved.
+    {% assign current_year = 'now' | date: '%Y' %}
+    <div class="carkit-footer__copyright" style="color: {{ section.settings.copyright_color }}; border-color: {{ section.settings.copyright_border }};">
+      {{ section.settings.copyright_text | replace: '[year]', current_year }}
     </div>
   </div>
 </footer>
 
 {% stylesheet %}
-  .carkit-footer {
-    background: #111418;
-    color: #94a3b8;
-    padding: 64px 0 32px;
-  }
-  .carkit-footer__inner {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 0 24px;
-  }
-  .carkit-footer__grid {
-    display: grid;
-    grid-template-columns: 1.5fr 1fr 1fr 1fr;
-    gap: 48px;
-    margin-bottom: 48px;
-  }
-  .carkit-footer__column {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-  .carkit-footer__logo {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    color: #0d7ff2;
-    font-size: 20px;
-    font-weight: 700;
-    margin-bottom: 8px;
-  }
-  .carkit-footer__logo-icon {
-    width: 36px;
-    height: 36px;
-    background: #0d7ff2;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-  }
-  .carkit-footer__logo-icon .material-symbols-outlined {
-    font-size: 20px;
-  }
-  .carkit-footer__newsletter-text {
-    font-size: 14px;
-    line-height: 1.6;
-    color: #94a3b8;
-    margin-bottom: 16px;
-    max-width: 320px;
-  }
-  .carkit-footer__newsletter-form {
-    display: flex;
-    gap: 8px;
-    max-width: 360px;
-  }
-  .carkit-footer__newsletter-input {
-    flex: 1;
-    height: 44px;
-    padding: 0 16px;
-    background: rgba(255,255,255,0.08);
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: 8px;
-    font-size: 14px;
-    color: #fff;
-    outline: none;
-  }
-  .carkit-footer__newsletter-input::placeholder {
-    color: #64748b;
-  }
-  .carkit-footer__newsletter-input:focus {
-    border-color: #0d7ff2;
-  }
-  .carkit-footer__newsletter-btn {
-    height: 44px;
-    padding: 0 24px;
-    background: #111827;
-    color: #fff;
-    font-size: 14px;
-    font-weight: 600;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    white-space: nowrap;
-  }
-  .carkit-footer__newsletter-btn:hover {
-    background: #1e293b;
-  }
-  .carkit-footer__heading {
-    font-size: 14px;
-    font-weight: 700;
-    color: #fff;
-    margin: 0 0 8px;
-  }
-  .carkit-footer__links {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  .carkit-footer__links li {
-    margin-bottom: 8px;
-  }
-  .carkit-footer__links a {
-    font-size: 14px;
-    color: #94a3b8;
-    text-decoration: none;
-  }
-  .carkit-footer__links a:hover {
-    color: #fff;
-  }
-  .carkit-footer__copyright {
-    padding-top: 24px;
-    border-top: 1px solid rgba(255,255,255,0.1);
-    font-size: 13px;
-    color: #64748b;
-  }
-  @media (max-width: 768px) {
-    .carkit-footer__grid {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-  @media (max-width: 480px) {
-    .carkit-footer__grid {
-      grid-template-columns: 1fr;
-    }
-  }
+  .carkit-footer__inner { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+  .carkit-footer__grid { display: grid; }
+  .carkit-footer__column { display: flex; flex-direction: column; gap: 16px; }
+  .carkit-footer__logo { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+  .carkit-footer__logo-img { max-height: 40px; width: auto; }
+  .carkit-footer__logo-icon { width: 36px; height: 36px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; }
+  .carkit-footer__logo-icon .material-symbols-outlined { font-size: 20px; }
+  .carkit-footer__newsletter-text { font-size: 14px; line-height: 1.6; margin-bottom: 16px; max-width: 320px; }
+  .carkit-footer__newsletter-form { display: flex; gap: 8px; max-width: 360px; }
+  .carkit-footer__newsletter-input { flex: 1; height: 44px; padding: 0 16px; border: 1px solid; border-radius: 8px; font-size: 14px; outline: none; }
+  .carkit-footer__newsletter-input::placeholder { color: #64748b; }
+  .carkit-footer__newsletter-input:focus { border-color: #0d7ff2; }
+  .carkit-footer__newsletter-btn { height: 44px; padding: 0 24px; font-size: 14px; font-weight: 600; border: none; border-radius: 8px; cursor: pointer; white-space: nowrap; }
+  .carkit-footer__heading { font-size: 14px; font-weight: 700; margin: 0 0 8px; }
+  .carkit-footer__links { list-style: none; padding: 0; margin: 0; }
+  .carkit-footer__links li { margin-bottom: 8px; }
+  .carkit-footer__links a { font-size: 14px; text-decoration: none; }
+  .carkit-footer__links a:hover { color: #fff !important; }
+  .carkit-footer__copyright { padding-top: 24px; border-top: 1px solid; font-size: 13px; }
+  @media (max-width: 768px) { .carkit-footer__grid { grid-template-columns: 1fr 1fr !important; } }
+  @media (max-width: 480px) { .carkit-footer__grid { grid-template-columns: 1fr !important; } }
 {% endstylesheet %}
 
 {% schema %}
 {
-  "name": "t:general.footer",
+  "name": "Footer",
   "settings": [
+    { "type": "header", "content": "Footer" },
+    { "type": "color", "id": "footer_bg", "label": "Background", "default": "#111418" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 32, "max": 96, "step": 8, "default": 64, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 24, "max": 64, "step": 8, "default": 32, "unit": "px" },
+    { "type": "text", "id": "columns", "label": "Column layout", "default": "1.5fr 1fr 1fr 1fr", "info": "CSS grid-template-columns, e.g. 1fr 1fr 1fr" },
+    { "type": "range", "id": "gap", "label": "Gap between columns", "min": 24, "max": 64, "step": 8, "default": 48, "unit": "px" },
+    { "type": "header", "content": "Copyright" },
+    { "type": "text", "id": "copyright_text", "label": "Copyright text", "default": "© [year] CarKit Inc. All rights reserved.", "info": "Use [year] for current year" },
+    { "type": "color", "id": "copyright_color", "label": "Copyright color", "default": "#64748b" },
+    { "type": "color", "id": "copyright_border", "label": "Copyright border", "default": "rgba(255,255,255,0.1)" }
+  ],
+  "blocks": [
     {
-      "type": "link_list",
-      "id": "menu",
-      "label": "t:labels.menu"
+      "type": "newsletter",
+      "name": "Newsletter",
+      "settings": [
+        { "type": "checkbox", "id": "show_logo", "label": "Show logo", "default": true },
+        { "type": "image_picker", "id": "logo_image", "label": "Logo image" },
+        { "type": "text", "id": "logo_text", "label": "Logo text", "default": "CarKit" },
+        { "type": "text", "id": "logo_icon", "label": "Logo icon (Material)", "default": "build" },
+        { "type": "color", "id": "logo_color", "label": "Logo color", "default": "#0d7ff2" },
+        { "type": "textarea", "id": "newsletter_text", "label": "Newsletter description", "default": "Subscribe to our newsletter for new products, trends and exclusive offers." },
+        { "type": "color", "id": "text_color", "label": "Text color", "default": "#94a3b8" },
+        { "type": "text", "id": "email_placeholder", "label": "Email placeholder", "default": "Email address" },
+        { "type": "color", "id": "input_bg", "label": "Input background", "default": "rgba(255,255,255,0.08)" },
+        { "type": "color", "id": "input_border", "label": "Input border", "default": "rgba(255,255,255,0.15)" },
+        { "type": "color", "id": "input_color", "label": "Input text color", "default": "#ffffff" },
+        { "type": "text", "id": "button_text", "label": "Button text", "default": "Join" },
+        { "type": "color", "id": "button_bg", "label": "Button background", "default": "#111827" },
+        { "type": "color", "id": "button_color", "label": "Button text color", "default": "#ffffff" }
+      ]
     },
     {
-      "type": "checkbox",
-      "id": "show_payment_icons",
-      "label": "t:labels.show_payment_icons",
-      "default": true
+      "type": "menu",
+      "name": "Menu",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Shop" },
+        { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#ffffff" },
+        { "type": "link_list", "id": "menu", "label": "Menu", "info": "Use menu or manual links below" },
+        { "type": "color", "id": "link_color", "label": "Link color", "default": "#94a3b8" },
+        { "type": "header", "content": "Or add links manually" },
+        { "type": "text", "id": "link_1_label", "label": "Link 1 label" },
+        { "type": "url", "id": "link_1_url", "label": "Link 1 URL" },
+        { "type": "text", "id": "link_2_label", "label": "Link 2 label" },
+        { "type": "url", "id": "link_2_url", "label": "Link 2 URL" },
+        { "type": "text", "id": "link_3_label", "label": "Link 3 label" },
+        { "type": "url", "id": "link_3_url", "label": "Link 3 URL" },
+        { "type": "text", "id": "link_4_label", "label": "Link 4 label" },
+        { "type": "url", "id": "link_4_url", "label": "Link 4 URL" },
+        { "type": "text", "id": "link_5_label", "label": "Link 5 label" },
+        { "type": "url", "id": "link_5_url", "label": "Link 5 URL" }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "About" },
+        { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#ffffff" },
+        { "type": "textarea", "id": "content", "label": "Content" },
+        { "type": "color", "id": "text_color", "label": "Text color", "default": "#94a3b8" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer",
+      "blocks": [
+        { "type": "newsletter", "settings": {} },
+        { "type": "menu", "settings": { "heading": "Shop", "link_1_label": "All Accessories", "link_2_label": "New Arrivals", "link_3_label": "Featured Brands", "link_4_label": "Gift Cards" } },
+        { "type": "menu", "settings": { "heading": "Support", "link_1_label": "Help Center", "link_2_label": "Fitment Guarantee", "link_3_label": "Returns & Exchanges", "link_4_label": "Contact Us" } },
+        { "type": "menu", "settings": { "heading": "About", "link_1_label": "Our Story", "link_2_label": "Careers", "link_3_label": "Press", "link_4_label": "Privacy Policy" } }
+      ]
     }
   ]
 }

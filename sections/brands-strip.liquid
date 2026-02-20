@@ -1,15 +1,35 @@
 <!-- CarKit Brands Strip Section -->
-<section style="background: #fff; padding: 48px 0;">
+<section style="background: {{ section.settings.section_bg }}; padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;">
   <div style="max-width: 1280px; margin: 0 auto; padding: 0 24px; text-align: center;">
 
-    <p style="font-size: 11px; font-weight: 600; letter-spacing: 0.1em; color: #94a3b8; text-transform: uppercase; margin-bottom: 24px;">{{ section.settings.label }}</p>
+    {% if section.settings.label != blank %}
+      <p style="font-size: {{ section.settings.label_size }}px; font-weight: 600; letter-spacing: 0.1em; color: {{ section.settings.label_color }}; text-transform: uppercase; margin-bottom: 24px;">{{ section.settings.label }}</p>
+    {% endif %}
 
-    <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px; opacity: 0.6; transition: opacity 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">
+    <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: {{ section.settings.gap }}px; opacity: {{ section.settings.brand_opacity | divided_by: 100.0 }};">
       {% for block in section.blocks %}
         {% if block.type == 'brand' %}
-          <div style="height: 40px; padding: 0 24px; display: flex; align-items: center; border: 1px solid #e2e8f0; border-radius: 9999px; font-size: 13px; font-weight: 700; color: #334155; letter-spacing: 0.05em; transition: all 0.2s;" onmouseover="this.style.borderColor='#0d7ff2'; this.style.color='#0d7ff2'" onmouseout="this.style.borderColor='#e2e8f0'; this.style.color='#334155'">
-            {{ block.settings.name }}
-          </div>
+          {% if block.settings.url != blank %}
+            <a href="{{ block.settings.url }}" {{ block.shopify_attributes }} style="display: flex; align-items: center; justify-content: center; height: {{ section.settings.brand_height }}px; padding: 0 {{ section.settings.brand_padding }}px; text-decoration: none; border: 1px solid {{ section.settings.brand_border }}; border-radius: 9999px; transition: all 0.2s;"
+               onmouseover="this.style.borderColor='{{ section.settings.brand_hover_border }}'; this.style.color='{{ section.settings.brand_hover_color }}'"
+               onmouseout="this.style.borderColor='{{ section.settings.brand_border }}'; this.style.color='{{ section.settings.brand_color }}'">
+          {% else %}
+            <div {{ block.shopify_attributes }} style="height: {{ section.settings.brand_height }}px; padding: 0 {{ section.settings.brand_padding }}px; display: flex; align-items: center; border: 1px solid {{ section.settings.brand_border }}; border-radius: 9999px; transition: all 0.2s;"
+                 onmouseover="this.style.borderColor='{{ section.settings.brand_hover_border }}'; this.style.color='{{ section.settings.brand_hover_color }}'"
+                 onmouseout="this.style.borderColor='{{ section.settings.brand_border }}'; this.style.color='{{ section.settings.brand_color }}'">
+          {% endif %}
+
+          {% if block.settings.image != blank %}
+            <img src="{{ block.settings.image | image_url: width: 200 }}" alt="{{ block.settings.name | escape }}" width="120" height="40" loading="lazy" style="max-height: {{ section.settings.brand_height | minus: 8 }}px; width: auto; object-fit: contain;">
+          {% else %}
+            <span style="font-size: {{ section.settings.brand_font_size }}px; font-weight: 700; color: {{ section.settings.brand_color }}; letter-spacing: 0.05em;">{{ block.settings.name }}</span>
+          {% endif %}
+
+          {% if block.settings.url != blank %}
+            </a>
+          {% else %}
+            </div>
+          {% endif %}
         {% endif %}
       {% endfor %}
     </div>
@@ -20,14 +40,33 @@
 {
   "name": "Brands Strip",
   "settings": [
-    { "type": "text", "id": "label", "label": "Label", "default": "Trusted by Global Brands" }
+    { "type": "header", "content": "Section" },
+    { "type": "color", "id": "section_bg", "label": "Background", "default": "#ffffff" },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 24, "max": 80, "step": 8, "default": 48, "unit": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 24, "max": 80, "step": 8, "default": 48, "unit": "px" },
+    { "type": "header", "content": "Label" },
+    { "type": "text", "id": "label", "label": "Label", "default": "Trusted by Global Brands" },
+    { "type": "range", "id": "label_size", "label": "Label size", "min": 10, "max": 14, "step": 1, "default": 11, "unit": "px" },
+    { "type": "color", "id": "label_color", "label": "Label color", "default": "#94a3b8" },
+    { "type": "header", "content": "Brands" },
+    { "type": "range", "id": "gap", "label": "Gap between brands", "min": 8, "max": 24, "step": 4, "default": 12, "unit": "px" },
+    { "type": "range", "id": "brand_height", "label": "Brand height", "min": 32, "max": 64, "step": 4, "default": 40, "unit": "px" },
+    { "type": "range", "id": "brand_padding", "label": "Brand padding", "min": 12, "max": 40, "step": 4, "default": 24, "unit": "px" },
+    { "type": "range", "id": "brand_font_size", "label": "Brand font size", "min": 11, "max": 18, "step": 1, "default": 13, "unit": "px" },
+    { "type": "color", "id": "brand_color", "label": "Brand color", "default": "#334155" },
+    { "type": "color", "id": "brand_border", "label": "Brand border", "default": "#e2e8f0" },
+    { "type": "color", "id": "brand_hover_border", "label": "Brand hover border", "default": "#0d7ff2" },
+    { "type": "color", "id": "brand_hover_color", "label": "Brand hover color", "default": "#0d7ff2" },
+    { "type": "range", "id": "brand_opacity", "label": "Brand opacity", "min": 40, "max": 100, "step": 5, "default": 60, "unit": "%" }
   ],
   "blocks": [
     {
       "type": "brand",
       "name": "Brand",
       "settings": [
-        { "type": "text", "id": "name", "label": "Brand Name", "default": "BRAND" }
+        { "type": "image_picker", "id": "image", "label": "Brand logo", "info": "Overrides text name" },
+        { "type": "text", "id": "name", "label": "Brand name", "default": "BRAND" },
+        { "type": "url", "id": "url", "label": "Brand link" }
       ]
     }
   ],
